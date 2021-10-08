@@ -1,0 +1,4 @@
+ALTER TABLE users
+    ADD COLUMN email VARCHAR(50) NOT NULL;
+ALTER TABLE users
+    ALTER COLUMN email SET DEFAULT 'test@email'

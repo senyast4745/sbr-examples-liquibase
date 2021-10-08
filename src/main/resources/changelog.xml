@@ -1,0 +1,43 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+
+    <changeSet author="senyasdr" id="1">
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="SERIAL">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="login" type="VARCHAR(255)">
+                <constraints unique="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="senyasdr" id="2">
+        <addColumn tableName="users">
+            <column name="password" type="VARCHAR(255)" defaultValue="change_me">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+    </changeSet>
+    
+    <changeSet id="3" author="senyasdr">
+        <insert tableName="users">
+            <column name="login" value="pupkin"/>
+            <column name="password" value="change_me_pls"/>
+        </insert>
+        <rollback>
+            <delete tableName="users">
+                <where>
+                    login='pupkin'
+                </where>
+            </delete>
+        </rollback>
+    </changeSet>
+
+    <changeSet author="senyasdr" id="4">
+        <sqlFile path="src/main/resources/add_login.sql"/>
+        <rollback>
+            <dropColumn tableName="users" columnName="email"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
